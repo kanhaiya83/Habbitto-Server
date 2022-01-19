@@ -84,9 +84,22 @@ catch(e){
 res.status(500).send()
 }})
 
-router.get("/test",verifyJWT,(r,res)=>{
-    console.log(r.userId);
+router.get("/verifyuser",verifyJWT,async(req,res)=>{
     
+  const user =await  UserModel.findOne({ id:req.userId });
+  if (!user) {
+    return res
+      .status(404)
+      .send({
+        success:false,
+        error: "No user found!",
+        message: "No user found with given username",
+      });
+  }
+  console.log(user);
+  
+  return res.status(200).send({success:true})
+
 })
 
 
