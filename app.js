@@ -1,54 +1,34 @@
 const express = require("express");
-const crypto = require("crypto");
-const mongoose = require("mongoose");
-const passport = require("passport");
-const session = require("express-session");
 var cors = require("cors");
+var path = require("path");
 
 require("dotenv").config();
 
-const routes = require("./routes");
-const connection = require("./config/database");
+const userRoute = require("./routes/user.js");
+const habitRoute = require("./routes/habits.js");
 
 var app = express();
 
-const port = process.env.PORT || process.env.DEV_PORT;
+const port = process.env.PORT ||5000;
 
-//mongo store
-const MongoStore = require("connect-mongo");
 
 var corsOptions = {
-  origin: [process.env.FRONTEND_URL, process.env.DEV_FRONTEND_URL,"http://localhost:5500"],
-  credentials: true,
+  origin: "*"
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//sesssion store setup
 
-const sessionStore = MongoStore.create({ mongoUrl: process.env.DB_STRING });
+app.use(userRoute);
+app.use(habitRoute);
 
-app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: sessionStore, 
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, 
-      domain:"localhost"
-    },
-  })
-);
-app.use((req, res, next) => {
-  next();
-});
-require("./config/passport");
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(routes);
+app.get("/images/:imageName",(req,res)=>{
+  imageName=req.params.imageName
+  res.sendFile(path.join(__dirname ,"public/images/"+imageName+".png"))
+  
+})
 
 app.listen(port, () => {
   console.log("App running on http://localhost:" + port);

@@ -1,32 +1,46 @@
 const mongoose = require('mongoose');
 
+
+const { Schema } = mongoose;
 require('dotenv').config(); 
 
-/**
- * -------------- DATABASE ----------------
- */
+const connUri = process.env.NODE_ENV=="development" ?process.env.DEV_DB_URI:process.env.DB_URI;
 
-/**
- * Connect to MongoDB Server using the connection string in the `.env` file.  To implement this, place the following
- * string into the `.env` file
- * 
- * DB_STRING=mongodb://<user>:<password>@localhost:27017/database_name
- */ 
-
-const conn = process.env.DB_STRING;
-const connection = mongoose.createConnection(conn, {
+mongoose
+  .connect(connUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+    useUnifiedTopology:true
+  })
+  .then(() => {
+    console.log("Connected to Mongoose");
+  })
+  .catch((err) => {
+    console.log("Could not connect to mongoose;Error: ", err);
+  });
+
 // Creates simple schema for a User.  The hash and salt are derived from the user's given password when they register
-const UserSchema = new mongoose.Schema({
-    username: String,
-    hash: String,
-    salt: String
-});
+
+habitSchema = new Schema({
+    userId:String,
+    title: {type:String,required:true},
+    isCompleted: {type:Boolean,required:true},
+    reminder: {type:Number},
+    
+  });
+  
+  userSchema = new Schema({
+    username: { type: String, required: true },
+    hash: { type: String, required: true },
+    salt: { type: String, required: true },
+    mobileNumber:{type:String}
+  });
+  
+
+const UserModel = mongoose.model('User', userSchema);
+const HabitModel = mongoose.model('Habit', habitSchema);
 
 
-const User = connection.model('User', UserSchema);
 
-// Expose the connection
-module.exports = connection;
+
+
+module.exports = {HabitModel,UserModel};
