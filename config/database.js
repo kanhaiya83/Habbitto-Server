@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 require('dotenv').config(); 
 
-const connUri = process.env.NODE_ENV=="development" ?process.env.DEV_DB_URI:process.env.DB_URI;
-
+let connUri = process.env.NODE_ENV=="development" ?process.env.DEV_DB_URI:process.env.DB_URI;
 mongoose
   .connect(connUri, {
     useNewUrlParser: true,
@@ -24,7 +23,9 @@ habitSchema = new Schema({
     userId:String,
     title: {type:String,required:true},
     isCompleted: {type:Boolean,required:true},
-    reminder: {type:Number},
+    isReminderSet:{type:Boolean},
+    repeatDays:{type:[Number],required:true},
+    reminderTime: {type:Number}
     
   });
   

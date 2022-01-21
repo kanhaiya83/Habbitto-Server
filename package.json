@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "mongodb-server": "mongod --dbpath=C:/Users/hp/mongodb-data",
+    "mongo": "mongod --dbpath=C:/Users/hp/mongodb-data",
     "dev": "nodemon app.js",
+    "con-dev":"concurrently \"mongod --dbpath=C:/Users/hp/mongodb-data\" \"nodemon app.js\"",
     "start": "node app.js"
   },
   "keywords": [],

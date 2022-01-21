@@ -34,8 +34,9 @@ router.post("/addhabit", verifyJWT, async (req, res) => {
   const newHabit = new HabitModel(habitData);
   try {
     const savedHabit = await newHabit.save();
-   
-    return res.send({ savedHabit, success: true });
+    
+   const {id,title,isCompleted,reminderTime,isReminderSet,repeatDays}=savedHabit
+    return res.send({id, title,isCompleted,reminderTime,isReminderSet,repeatDays });
   } catch (e) {
     console.log({ errror: e });
     return res
