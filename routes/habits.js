@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/habits", verifyJWT, async (req, res) => {
   try {
     const habits = await HabitModel.find({ userId: req.userId });
-    return res.send({ habits: habits, success: true });
+    return res.send({ habits: habits, success: true ,username:req.username});
   } catch (e) {
     res
       .status(500)

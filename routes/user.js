@@ -39,10 +39,11 @@ router.post("/signup", async (req, res) => {
 console.log({savedUser})
     const jwtPayload = {
         userId: savedUser.id,
+        username:savedUser.username
     };
     const authToken = await jwt.sign(jwtPayload, process.env.JWT_SECRET);
 
-    res.send({success:true, authToken });
+    res.send({success:true, authToken ,username:req.username});
   } catch (e) {
     return res.status(500).send({ success:false,message:"Some Error occured",error: e });
   }
@@ -62,6 +63,7 @@ router.post("/login", async (req, res) => {try{
       });
   }
   const isValidPassword=passwordUtils.validatePassword(password,user.hash,user.salt)
+  console.log(isValidPassword);
   if(!isValidPassword){
       
     return res
@@ -74,13 +76,15 @@ success:false,
   }
   
   const jwt_payload={
-          userId:user.id
+          userId:user.id,
+          username:user.username
   }
 
   const authToken=jwt.sign(jwt_payload,process.env.JWT_SECRET)
-  return res.send({success:true,authToken})}
+  return res.send({success:true,authToken,username:req.username})}
 
 catch(e){
+  console.log(e);
 res.status(500).send()
 }})
 
