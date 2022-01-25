@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 require('dotenv').config(); 
 
-let connUri = process.env.NODE_ENV=="development" ?process.env.DEV_DB_URI:process.env.DB_URI;
+// let connUri = process.env.NODE_ENV=="development" ?process.env.DEV_DB_URI:process.env.DB_URI;
+let connUri=process.env.DEV_DB_URI || process.env.DB_URI
 mongoose
   .connect(connUri, {
     useNewUrlParser: true,

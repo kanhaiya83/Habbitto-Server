@@ -45,7 +45,7 @@ console.log({savedUser})
 
     res.send({success:true, authToken ,username:req.username});
   } catch (e) {
-    return res.status(500).send({ success:false,message:"Some Error occured",error: e });
+    return res.status(500).send({ success:false,message:"Some error occurred!!",error: e });
   }
 });
 
@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {try{
       .send({
         success:false,
         error: "some error occurred",
-        message: "No user found with given username",
+        message: "No user found with given username!",
       });
   }
   const isValidPassword=passwordUtils.validatePassword(password,user.hash,user.salt)
@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {try{
     .send({
 success:false,
       error: "some error occurred",
-      message: "Enter a valid password",
+      message: "Password is incorrect!",
     });
   }
   
@@ -85,7 +85,9 @@ success:false,
 
 catch(e){
   console.log(e);
-res.status(500).send()
+res.status(500).send({success:false,
+  error: e,
+  message: "Some error occurred!!",})
 }})
 
 router.get("/verifyuser",verifyJWT,async(req,res)=>{
