@@ -24,9 +24,9 @@ habitSchema = new Schema({
     userId:String,
     title: {type:String,required:true},
     isCompleted: {type:Boolean,required:true},
-    isReminderSet:{type:Boolean},
+    // isReminderSet:{type:Boolean},
     repeatDays:{type:[Number],required:true},
-    reminderTime: {type:Number}
+    reminderTime: {type:String}
     
   });
   

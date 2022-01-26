@@ -28,7 +28,7 @@ router.get("/habits", verifyJWT, async (req, res) => {
   }
 });
 
-router.post("/addhabit", verifyJWT, async (req, res) => {
+router.post("/habits", verifyJWT, async (req, res) => {
   habitData=req.body
   habitData.userId=req.userId
   const newHabit = new HabitModel(habitData);
@@ -48,6 +48,8 @@ router.post("/addhabit", verifyJWT, async (req, res) => {
       });
   }
 });
+
+
 // router.delete("/tasks/:id", async (req, res) => {
 //   try {
 //     const deleted = await taskModel.findByIdAndDelete(req.params.id);
@@ -63,31 +65,54 @@ router.post("/addhabit", verifyJWT, async (req, res) => {
 //   }
 // });
 
-// router.patch("/tasks/:id", fetchUser, async (req, res) => {
-//   console.log({ toBePatched: req.body });
-//   try {
-//     const toBePatched = await taskModel.findByIdAndUpdate(
-//       req.params.id,
-//       { $set: req.body },
-//       { new: true }
-//     );
-//     //if no task found to be patched,return 404
-//     if (!toBePatched) {
-//       return res
-//         .status(404)
-//         .send({
-//           error: "Requested task not found",
-//           message: "Requested task not found",
-//           success: false,
-//         });
-//     }
-//     res.send({ success: true, toBePatched });
-//   } catch (e) {
-//     console.log(e);
-//     res
-//       .status(500)
-//       .send({ error: e, message: "Some error occurred!!", success: false });
-//   }
-// });
+router.patch("/habits/:id", verifyJWT, async (req, res) => {
+  console.log({ toBePatched: req.body });
+  try {
+    const patchedHabit = await HabitModel.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    //if no task found to be patched,return 404
+    if (!patchedHabit) {
+      return res
+        .status(404)
+        .send({
+          error: "Requested task not found",
+          message: "Requested task not found",
+          success: false,
+        });
+    }
+    return res.send({ success: true, patchedHabit });
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .send({ error: e, message: "Some error occurred!!", success: false });
+  }
+});
+router.delete("/habits/:id", verifyJWT, async (req, res) => {
+  try {
+    const deletedHabit = await HabitModel.findByIdAndRemove(
+      req.params.id
+    );
+    //if no task found to be patched,return 404
+    if (!deletedHabit) {
+      return res
+        .status(404)
+        .send({
+          error: "Requested task not found",
+          message: "Requested task not found",
+          success: false,
+        });
+    }
+    return res.send({ success: true, deletedHabit });
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .send({ error: e, message: "Some error occurred!!", success: false });
+  }
+});
 
 module.exports = router;
