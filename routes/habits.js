@@ -35,8 +35,7 @@ router.post("/habits", verifyJWT, async (req, res) => {
   try {
     const savedHabit = await newHabit.save();
     
-   const {id,title,isCompleted,reminderTime,isReminderSet,repeatDays}=savedHabit
-    return res.send({id, title,isCompleted,reminderTime,isReminderSet,repeatDays });
+    return res.send({savedHabit});
   } catch (e) {
     console.log({ errror: e });
     return res
@@ -50,20 +49,6 @@ router.post("/habits", verifyJWT, async (req, res) => {
 });
 
 
-// router.delete("/tasks/:id", async (req, res) => {
-//   try {
-//     const deleted = await taskModel.findByIdAndDelete(req.params.id);
-//     if (!deleted) {
-//       return res.status(404).send("Requested task not found");
-//     }
-//     res.send({ deleted, success: true });
-//   } catch (e) {
-//     console.log(e);
-//     res
-//       .status(500)
-//       .send({ error: e, message: "Some error occurred!!", success: false });
-//   }
-// });
 
 router.patch("/habits/:id", verifyJWT, async (req, res) => {
   console.log({ toBePatched: req.body });
