@@ -30,17 +30,11 @@ app.get("/images/:imageName",(req,res)=>{
   
 })
 
-
-app.get("/",(req,res)=>{
-  console.log(req.originalUrl);
-    console.log(req.url);
-    console.log(req.path);
-    console.log(req.route.path);
-    console.log(req.baseUrl);
-    console.log(req.hostname);
-    console.log(req.headers.host) // OR req.header('host'));
-    console.log(req.protocol);
+app.get("/",(r,res)=>{
+  res.send("Habbitto Server")
 })
+
+
 app.listen(port, () => {
   console.log("App running on http://localhost:" + port);
 });
